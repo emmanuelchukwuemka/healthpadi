@@ -102,12 +102,20 @@ const EnhancedHospitalLocatorScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col pb-20">
-      <div className="bg-primary text-white pt-12 pb-24 px-6 rounded-b-[40px] shadow-lg mb-[-40px] relative z-0 flex-none">
-        <h1 className="text-2xl font-bold mb-2">Find Hospitals & Clinics</h1>
-        <p className="opacity-90 max-w-md">
-          Locate nearby medical facilities and get directions
-        </p>
+    <div className="min-h-screen bg-slate-50 flex flex-col pb-20">
+      {/* Professional Header */}
+      <div className="text-white pt-12 pb-24 px-6 rounded-b-[40px] shadow-xl mb-[-40px] relative z-0 flex-none" style={{ backgroundImage: 'linear-gradient(to bottom right, #003087, #00A0B0)' }}>
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-3 mb-3">
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+            <h1 className="text-2xl font-bold m-0">Find Hospitals & Clinics</h1>
+          </div>
+          <p className="text-white/90 max-w-md text-sm">
+            Locate nearby medical facilities and get real-time information
+          </p>
+        </div>
       </div>
 
       <div className="px-4 max-w-4xl mx-auto relative z-10 w-full mb-6">
@@ -123,22 +131,20 @@ const EnhancedHospitalLocatorScreen = () => {
             <Button
               variant={mapView === "list" ? "primary" : "ghost"}
               onClick={() => setMapView("list")}
-              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${
-                mapView === "list"
-                  ? "shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${mapView === "list"
+                ? "shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               <Icon name="list" className="mr-2" /> List View
             </Button>
             <Button
               variant={mapView === "map" ? "primary" : "ghost"}
               onClick={() => setMapView("map")}
-              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${
-                mapView === "map"
-                  ? "shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${mapView === "map"
+                ? "shadow-sm"
+                : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               <Icon name="map" className="mr-2" /> Map View
             </Button>
@@ -253,31 +259,122 @@ const EnhancedHospitalLocatorScreen = () => {
         </div>
       ) : (
         <div className="max-w-4xl mx-auto px-4 w-full h-[60vh] flex flex-col md:flex-row gap-4 mb-8">
-          <div className="flex-1 bg-gray-200 rounded-xl relative overflow-hidden flex flex-col items-center justify-center border border-gray-300">
-            <Icon
-              name="map"
-              size="large"
-              className="text-gray-400 mb-4 text-6xl"
-            />
-            <h3 className="text-xl font-bold text-gray-600 mb-2">
-              Interactive Map View
-            </h3>
-            <p className="text-gray-500 text-center max-w-xs mb-6">
-              Hospital locations would be displayed on an interactive map in a
-              production environment
-            </p>
-            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-md text-xs space-y-2">
+          {/* Map Placeholder with Visual Markers */}
+          <div className="flex-1 bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl relative overflow-hidden border border-slate-300 shadow-inner">
+            {/* Map Grid Pattern */}
+            <div className="absolute inset-0" style={{
+              backgroundImage: `
+                linear-gradient(to right, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(148, 163, 184, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px'
+            }}></div>
+
+            {/* Streets/Roads mockup */}
+            <div className="absolute inset-0">
+              {/* Horizontal roads */}
+              <div className="absolute w-full h-2 bg-slate-300/60 top-[30%]"></div>
+              <div className="absolute w-full h-3 bg-slate-400/70 top-[50%]" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)' }}></div>
+              <div className="absolute w-full h-2 bg-slate-300/60 top-[70%]"></div>
+
+              {/* Vertical roads */}
+              <div className="absolute h-full w-2 bg-slate-300/60 left-[25%]"></div>
+              <div className="absolute h-full w-3 bg-slate-400/70 left-[60%]" style={{ boxShadow: 'inset 1px 0 2px rgba(0,0,0,0.1)' }}></div>
+            </div>
+
+            {/* Hospital Markers */}
+            {filteredHospitals.map((hospital, idx) => {
+              const positions = [
+                { top: '35%', left: '40%' },
+                { top: '55%', left: '30%' },
+                { top: '25%', left: '70%' },
+                { top: '65%', left: '55%' },
+                { top: '45%', left: '75%' },
+              ];
+              const pos = positions[idx] || positions[0];
+
+              return (
+                <div
+                  key={hospital.id}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer group"
+                  style={{ top: pos.top, left: pos.left }}
+                  onClick={() => selectHospital(hospital)}
+                >
+                  {/* Marker Pin */}
+                  <div className="relative">
+                    {/* Pulse animation */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-12 h-12 bg-red-500/30 rounded-full animate-ping"></div>
+                    </div>
+
+                    {/* Main Pin */}
+                    <div className="relative w-10 h-10 rounded-full shadow-lg transform group-hover:scale-125 transition-transform"
+                      style={{
+                        backgroundColor: idx === 4 ? '#EF4444' : idx === 2 ? '#3B82F6' : '#10B981',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                      }}
+                    >
+                      <div className="absolute inset-0 flex items-center justify-center text-white">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" />
+                        </svg>
+                      </div>
+                    </div>
+
+                    {/* Hospital Name Label */}
+                    <div className="absolute top-12 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="bg-white px-3 py-1.5 rounded-lg shadow-lg border border-slate-200 whitespace-nowrap text-xs font-bold text-slate-800">
+                        {hospital.name}
+                        <div className="text-[10px] text-slate-500 font-normal">{hospital.distance}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Current Location Marker */}
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-blue-500/20 rounded-full animate-pulse"></div>
+                </div>
+                <div className="relative w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg"></div>
+              </div>
+            </div>
+
+            {/* Map Controls */}
+            <div className="absolute top-4 right-4 flex flex-col gap-2">
+              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+              <button className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20 12H4" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Legend */}
+            <div className="absolute bottom-4 right-4 bg-white/95 backdrop-blur-sm p-3 rounded-xl shadow-lg text-xs space-y-2 border border-slate-200">
+              <div className="font-bold text-slate-700 mb-2">Map Legend</div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span>Emergency Room</span>
+                <span className="text-slate-600">Emergency 24/7</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span>Specialist Clinic</span>
+                <span className="text-slate-600">Specialist</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span>General Hospital</span>
+                <span className="text-slate-600">General Hospital</span>
+              </div>
+              <div className="flex items-center gap-2 pt-2 border-t border-slate-200">
+                <div className="w-3 h-3 rounded-full bg-blue-600 border-2 border-white"></div>
+                <span className="text-slate-600 font-medium">Your Location</span>
               </div>
             </div>
           </div>

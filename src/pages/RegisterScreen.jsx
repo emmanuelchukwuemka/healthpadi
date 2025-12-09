@@ -60,6 +60,7 @@ const RegisterScreen = () => {
 
         {/* Header */}
         <div className="text-center mb-8">
+          <img src="/logo.png" alt="HealthPadi" className="h-[200px] w-auto mx-auto mb-4" />
           <h1 className="font-['Poppins'] text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
           <p className="font-['Inter'] text-slate-500 text-sm">Join HealthPadi to start your health journey</p>
         </div>

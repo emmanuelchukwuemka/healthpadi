@@ -47,13 +47,9 @@ const WelcomeScreen = () => {
       <div className="relative flex flex-col items-center justify-center min-h-screen p-6 max-w-4xl mx-auto z-10">
         <div className="w-full max-w-lg text-center space-y-8">
 
-          {/* Logo/Icon (Optional placeholder for brand mark) */}
+          {/* Logo */}
           <div className={`transition-all duration-1000 ease-out transform ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <div className="w-20 h-20 bg-gradient-to-tr from-teal-400 to-emerald-500 rounded-2xl mx-auto shadow-xl shadow-teal-200/50 flex items-center justify-center text-white mb-6">
-              <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
+            <img src="/logo.png" alt="HealthPadi" className="h-[200px] w-auto mx-auto mb-6" />
           </div>
 
           {/* Headings */}
@@ -61,7 +57,7 @@ const WelcomeScreen = () => {
             <h1
               className={`font-['Poppins'] text-4xl md:text-5xl font-bold text-gray-900 leading-tight tracking-tight transition-all duration-1000 delay-100 ease-out transform ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             >
-              Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-500 to-emerald-600">HealthPadi</span>
+              Welcome to <span className="text-transparent bg-clip-text" style={{ backgroundImage: 'linear-gradient(to right, #00A0B0, #6DDAD3)' }}>HealthPadi</span>
             </h1>
             <p
               className={`font-['Inter'] text-lg md:text-xl text-gray-500 max-w-sm mx-auto leading-relaxed transition-all duration-1000 delay-300 ease-out transform ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
@@ -74,7 +70,10 @@ const WelcomeScreen = () => {
           <div className={`pt-4 transition-all duration-1000 delay-500 ease-out transform ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <button
               onClick={handleContinue}
-              className="group relative w-full sm:w-auto min-w-[200px] bg-teal-600 hover:bg-teal-500 text-white font-['Inter'] font-semibold py-4 px-8 rounded-full shadow-lg shadow-teal-200/40 hover:shadow-teal-300/60 transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-4 focus:ring-teal-100"
+              className="group relative w-full sm:w-auto min-w-[200px] text-white font-['Inter'] font-semibold py-4 px-8 rounded-full shadow-lg transition-all duration-300 ease-out transform hover:-translate-y-1 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-4"
+              style={{ backgroundColor: '#00A0B0', boxShadow: '0 10px 25px rgba(0,160,176,0.3)' }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#6DDAD3'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#00A0B0'}
             >
               <span className="flex items-center justify-center gap-2">
                 Continue
