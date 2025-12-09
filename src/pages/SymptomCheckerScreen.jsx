@@ -125,7 +125,7 @@ const SymptomCheckerScreen = () => {
   return (
     <div className="p-5 max-w-[800px] mx-auto flex flex-col h-[calc(100vh-80px)] pb-16">
       <div className="flex justify-between items-center mb-5">
-        <h1 className="text-2xl font-bold">Symptom Checker</h1>
+        <h1 className="text-2xl font-bold">Personalized HealthPadi Symptom Checker</h1>
         <button
           className="bg-primary text-white py-2 px-4 rounded text-sm hover:opacity-90"
           onClick={handleSaveConversation}

@@ -42,7 +42,7 @@ const HomeScreen = () => {
   };
 
   const quickActions = [
-    { id: "mood", title: "Mood", icon: "😊", path: "/symptom-checker", color: "bg-amber-50 text-amber-600 border-amber-100" },
+    { id: "mood", title: "MyPadi", icon: "😊", path: "/symptom-checker", color: "bg-amber-50 text-amber-600 border-amber-100" },
     { id: "emergency", title: "Emergency", icon: "🚨", path: "/emergency-first-aid", color: "bg-red-50 text-red-600 border-red-100" },
     { id: "hospital", title: "Hospital", icon: "🏥", path: "/find-hospital", color: "bg-teal-50 text-teal-600 border-teal-100" },
     { id: "doctor", title: "Doctor", icon: "👨‍⚕️", path: "/doctor-listing", color: "bg-purple-50 text-purple-600 border-purple-100" },
