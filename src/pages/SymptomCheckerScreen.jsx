@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "@/components/layout/BottomNavigation";
-import "../App.css";
 
 const SymptomCheckerScreen = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -100,59 +99,70 @@ const SymptomCheckerScreen = () => {
   };
 
   return (
-    <div className="symptom-checker-screen">
-      <div className="symptom-header">
-        <h1>Symptom Checker</h1>
+    <div className="p-5 max-w-[800px] mx-auto flex flex-col h-[calc(100vh-80px)] pb-16">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-2xl font-bold">Symptom Checker</h1>
         <button
-          className="save-conversation-btn"
+          className="bg-primary text-white py-2 px-4 rounded text-sm hover:opacity-90"
           onClick={handleSaveConversation}
         >
           Save Conversation
         </button>
       </div>
 
-      <div className="symptom-conversation">
+      <div className="flex-1 overflow-y-auto bg-white rounded-xl p-5 mb-5 shadow-sm">
         {conversation.length === 0 ? (
-          <div className="empty-conversation">
+          <div className="flex justify-center items-center h-full text-gray-400">
             <p>Describe how you're feeling...</p>
           </div>
         ) : (
           conversation.map((message) => (
             <div
               key={message.id}
-              className={`message-bubble ${
-                message.sender === "user" ? "user-message" : "ai-message"
+              className={`mb-5 max-w-[80%] ${
+                message.sender === "user" ? "ml-auto" : "mr-auto"
               }`}
             >
               {message.sender === "user" ? (
-                <div className="user-message-content">
+                <div className="bg-primary text-white rounded-2xl rounded-br-none p-4 shadow-sm text-left">
                   <p>{message.text}</p>
                 </div>
               ) : (
-                <div className="ai-message-content">
-                  <p>
+                <div className="bg-gray-100 rounded-2xl rounded-bl-none p-4 shadow-sm text-left">
+                  <p className="mb-2">
                     <strong>Summary:</strong> {message.summary}
                   </p>
-                  <p>
-                    <strong>Urgency Level:</strong>
+                  <p className="mb-2">
+                    <strong>Urgency Level:</strong>{" "}
                     <span
-                      className={`urgency-${message.urgency.toLowerCase()}`}
+                      className={
+                        message.urgency === "High"
+                          ? "text-emergency font-bold"
+                          : message.urgency === "Moderate"
+                          ? "text-orange-500 font-bold"
+                          : "text-green-600 font-bold"
+                      }
                     >
                       {message.urgency}
                     </span>
                   </p>
-                  <p>
+                  <p className="mb-2">
                     <strong>Recommended Next Steps:</strong> {message.nextSteps}
                   </p>
                   {message.firstAid && (
-                    <p>
+                    <p className="mb-2">
                       <strong>First-Aid Advice:</strong> {message.firstAid}
                     </p>
                   )}
-                  <div className="disclaimer-banner">
-                    <p>{message.disclaimer}</p>
+                  <div className="bg-yellow-50 border border-yellow-200 rounded p-3 my-4">
+                    <p className="text-sm text-yellow-800">
+                      {message.disclaimer}
+                    </p>
                   </div>
-                  <button className="see-doctor-btn" onClick={handleSeeDoctor}>
+                  <button
+                    className="bg-emergency text-white w-full py-2 rounded mt-2 hover:opacity-90"
+                    onClick={handleSeeDoctor}
+                  >
                     See a Doctor
                   </button>
                 </div>
@@ -162,13 +172,13 @@ const SymptomCheckerScreen = () => {
         )}
       </div>
 
-      <div className="quick-symptoms">
-        <h3>Quick Symptoms:</h3>
-        <div className="symptom-chips">
+      <div className="mb-5">
+        <h3 className="font-semibold mb-2">Quick Symptoms:</h3>
+        <div className="flex flex-wrap gap-2">
           {quickSymptoms.map((symptom, index) => (
             <button
               key={index}
-              className="symptom-chip"
+              className="bg-gray-200 border-none rounded-full py-2 px-4 text-sm cursor-pointer hover:bg-gray-300 transition-colors"
               onClick={() => handleQuickSymptom(symptom)}
             >
               {symptom}
@@ -177,16 +187,19 @@ const SymptomCheckerScreen = () => {
         </div>
       </div>
 
-      <div className="message-input-container">
+      <div className="flex gap-2">
         <input
           type="text"
           value={userMessage}
           onChange={(e) => setUserMessage(e.target.value)}
           placeholder="Describe how you're feeling..."
-          className="message-input"
+          className="flex-1"
           onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
         />
-        <button className="send-button" onClick={handleSendMessage}>
+        <button
+          className="bg-primary text-white px-6 rounded-lg hover:opacity-90 transition-opacity"
+          onClick={handleSendMessage}
+        >
           Send
         </button>
       </div>

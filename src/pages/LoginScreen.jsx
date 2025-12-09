@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
-import "../App.css";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -83,14 +82,16 @@ const LoginScreen = () => {
   };
 
   return (
-    <div className="auth-screen">
-      <div className="auth-container">
-        <div className="auth-header">
-          <h1>Welcome Back</h1>
-          <p>Sign in to continue your health journey</p>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
+          <p className="text-gray-600">
+            Sign in to continue your health journey
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <Input
             label="Email Address"
             id="email"
@@ -113,15 +114,17 @@ const LoginScreen = () => {
             helperText={errors.password}
           />
 
-          <div className="form-options">
-            <label className="checkbox-container">
-              <input type="checkbox" />
-              <span className="checkmark"></span>
-              Remember me
+          <div className="flex justify-between items-center text-sm">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <span>Remember me</span>
             </label>
             <button
               type="button"
-              className="forgot-password"
+              className="text-primary hover:underline bg-transparent border-none cursor-pointer p-0"
               onClick={() => navigate("/forgot-password")}
             >
               Forgot Password?
@@ -133,26 +136,28 @@ const LoginScreen = () => {
             variant="primary"
             fullWidth
             disabled={isLoading}
-            className="auth-button"
+            className="mt-2"
           >
             {isLoading ? (
-              <>
-                <Icon name="spinner" className="spin" /> Signing In...
-              </>
+              <span className="flex items-center gap-2">
+                <Icon name="spinner" className="animate-spin" /> Signing In...
+              </span>
             ) : (
               "Sign In"
             )}
           </Button>
         </form>
 
-        <div className="social-login">
-          <p className="divider">or continue with</p>
-          <div className="social-buttons">
+        <div className="mt-8 text-center">
+          <p className="text-gray-400 text-sm mb-4 relative flex items-center justify-center before:content-[''] before:flex-1 before:border-b before:border-gray-200 before:mr-4 after:content-[''] after:flex-1 after:border-b after:border-gray-200 after:ml-4">
+            or continue with
+          </p>
+          <div className="flex gap-4 justify-center">
             <Button
               variant="secondary"
               onClick={handleGoogleLogin}
               disabled={isLoading}
-              className="social-button"
+              className="flex items-center gap-2 flex-1"
             >
               <Icon name="google" /> Google
             </Button>
@@ -160,18 +165,18 @@ const LoginScreen = () => {
               variant="secondary"
               onClick={handleFacebookLogin}
               disabled={isLoading}
-              className="social-button"
+              className="flex items-center gap-2 flex-1"
             >
               <Icon name="facebook" /> Facebook
             </Button>
           </div>
         </div>
 
-        <div className="auth-footer">
+        <div className="mt-8 text-center text-sm text-gray-600">
           <p>
             Don't have an account?{" "}
             <button
-              className="link-button"
+              className="text-primary font-bold hover:underline bg-transparent border-none cursor-pointer p-0 ml-1"
               onClick={() => navigate("/register")}
             >
               Sign Up

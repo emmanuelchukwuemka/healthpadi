@@ -3,7 +3,7 @@ import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
 import Input from "@/components/common/Input";
 import Icon from "@/components/common/Icon";
-import "../App.css";
+import SearchBar from "@/components/common/SearchBar";
 
 const EnhancedHospitalLocatorScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -102,118 +102,147 @@ const EnhancedHospitalLocatorScreen = () => {
   };
 
   return (
-    <div className="enhanced-hospital-locator-screen">
-      <div className="hospital-locator-header">
-        <h1>Find Hospitals & Clinics</h1>
-        <p>Locate nearby medical facilities and get directions</p>
+    <div className="min-h-screen bg-gray-50 flex flex-col pb-20">
+      <div className="bg-primary text-white pt-12 pb-24 px-6 rounded-b-[40px] shadow-lg mb-[-40px] relative z-0 flex-none">
+        <h1 className="text-2xl font-bold mb-2">Find Hospitals & Clinics</h1>
+        <p className="opacity-90 max-w-md">
+          Locate nearby medical facilities and get directions
+        </p>
       </div>
 
-      <div className="hospital-search-controls">
-        <SearchBar
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search hospitals, services, or locations..."
-          className="hospital-search-bar"
-        />
+      <div className="px-4 max-w-4xl mx-auto relative z-10 w-full mb-6">
+        <div className="bg-white p-4 rounded-xl shadow-lg flex flex-col gap-4">
+          <SearchBar
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search hospitals, services, or locations..."
+            className="w-full"
+          />
 
-        <div className="view-toggle">
-          <Button
-            variant={mapView === "list" ? "primary" : "secondary"}
-            onClick={() => setMapView("list")}
-            className="view-toggle-btn"
-          >
-            <Icon name="list" /> List View
-          </Button>
-          <Button
-            variant={mapView === "map" ? "primary" : "secondary"}
-            onClick={() => setMapView("map")}
-            className="view-toggle-btn"
-          >
-            <Icon name="map" /> Map View
-          </Button>
+          <div className="flex bg-gray-100 p-1 rounded-lg self-center">
+            <Button
+              variant={mapView === "list" ? "primary" : "ghost"}
+              onClick={() => setMapView("list")}
+              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${
+                mapView === "list"
+                  ? "shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <Icon name="list" className="mr-2" /> List View
+            </Button>
+            <Button
+              variant={mapView === "map" ? "primary" : "ghost"}
+              onClick={() => setMapView("map")}
+              className={`flex-1 rounded-md py-2 px-6 text-sm font-medium transition-all ${
+                mapView === "map"
+                  ? "shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
+              }`}
+            >
+              <Icon name="map" className="mr-2" /> Map View
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="hospital-results-summary">
+      <div className="max-w-4xl mx-auto px-6 mb-4 text-gray-500 text-sm font-medium w-full">
         <p>
           Showing {filteredHospitals.length} of {hospitals.length} hospitals
         </p>
       </div>
 
       {mapView === "list" ? (
-        <div className="hospital-list">
+        <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-8 w-full">
           {filteredHospitals.map((hospital) => (
             <Card
               key={hospital.id}
               variant="elevated"
-              className="hospital-card"
+              className="flex flex-col h-full hover:shadow-md transition-shadow"
             >
-              <div className="hospital-card-content">
-                <div className="hospital-header">
-                  <h3>{hospital.name}</h3>
-                  <div className="hospital-rating">
-                    <Icon name="star" />
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-start mb-3">
+                  <h3 className="font-bold text-lg text-gray-800 leading-tight">
+                    {hospital.name}
+                  </h3>
+                  <div className="flex items-center gap-1 bg-yellow-50 text-yellow-700 px-2 py-1 rounded-lg text-sm font-bold shrink-0">
+                    <Icon name="star" className="text-yellow-500" />
                     <span>{hospital.rating}</span>
                   </div>
                 </div>
 
-                <div className="hospital-details">
-                  <div className="hospital-address">
-                    <Icon name="location" />
-                    <span>{hospital.address}</span>
+                <div className="space-y-2 mb-4 text-sm text-gray-600">
+                  <div className="flex items-start gap-2">
+                    <Icon
+                      name="location"
+                      className="text-primary mt-0.5 shrink-0"
+                    />
+                    <span className="line-clamp-2">{hospital.address}</span>
                   </div>
 
-                  <div className="hospital-distance">
-                    <Icon name="distance" />
+                  <div className="flex items-center gap-2">
+                    <Icon name="distance" className="text-primary shrink-0" />
                     <span>{hospital.distance} away</span>
                   </div>
 
-                  <div className="hospital-wait-time">
-                    <Icon name="clock" />
-                    <span>Current wait: {hospital.waitTime}</span>
+                  <div className="flex items-center gap-2">
+                    <Icon name="clock" className="text-primary shrink-0" />
+                    <span className="font-medium text-green-600">
+                      Wait time: {hospital.waitTime}
+                    </span>
                   </div>
                 </div>
 
-                <div className="hospital-services">
-                  <h4>Services:</h4>
-                  <div className="services-tags">
+                <div className="mb-4">
+                  <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                    Services:
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
                     {hospital.services.slice(0, 3).map((service, index) => (
-                      <span key={index} className="service-tag">
+                      <span
+                        key={index}
+                        className="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium"
+                      >
                         {service}
                       </span>
                     ))}
                     {hospital.services.length > 3 && (
-                      <span className="service-tag">
+                      <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-medium">
                         +{hospital.services.length - 3} more
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="hospital-hours">
-                  <Icon name="calendar" />
-                  <span>{hospital.hours}</span>
+                <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 p-2 rounded-lg mb-4">
+                  <Icon name="calendar" className="text-green-600" />
+                  <span className="font-medium">{hospital.hours}</span>
                 </div>
 
-                <div className="hospital-actions">
+                <div className="grid grid-cols-3 gap-2 mt-auto">
                   <Button
                     variant="secondary"
+                    size="small"
                     onClick={() => handleCallHospital(hospital.phone)}
-                    className="action-btn"
+                    className="justify-center"
                   >
-                    <Icon name="call" /> Call
+                    <Icon name="call" />{" "}
+                    <span className="hidden sm:inline ml-1">Call</span>
                   </Button>
                   <Button
                     variant="secondary"
+                    size="small"
                     onClick={() => handleGetDirections(hospital.address)}
-                    className="action-btn"
+                    className="justify-center"
                   >
-                    <Icon name="directions" /> Directions
+                    <Icon name="directions" />{" "}
+                    <span className="hidden sm:inline ml-1">Map</span>
                   </Button>
                   <Button
                     variant="primary"
+                    size="small"
                     onClick={() => selectHospital(hospital)}
-                    className="action-btn"
+                    className="justify-center"
                   >
                     <Icon name="info" /> Details
                   </Button>
@@ -223,148 +252,184 @@ const EnhancedHospitalLocatorScreen = () => {
           ))}
         </div>
       ) : (
-        <div className="map-view-container">
-          <div className="map-placeholder">
-            <Icon name="map" size="large" />
-            <h3>Interactive Map View</h3>
-            <p>
+        <div className="max-w-4xl mx-auto px-4 w-full h-[60vh] flex flex-col md:flex-row gap-4 mb-8">
+          <div className="flex-1 bg-gray-200 rounded-xl relative overflow-hidden flex flex-col items-center justify-center border border-gray-300">
+            <Icon
+              name="map"
+              size="large"
+              className="text-gray-400 mb-4 text-6xl"
+            />
+            <h3 className="text-xl font-bold text-gray-600 mb-2">
+              Interactive Map View
+            </h3>
+            <p className="text-gray-500 text-center max-w-xs mb-6">
               Hospital locations would be displayed on an interactive map in a
               production environment
             </p>
-            <div className="map-legend">
-              <div className="legend-item">
-                <div className="legend-color emergency"></div>
+            <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-md text-xs space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500"></div>
                 <span>Emergency Room</span>
               </div>
-              <div className="legend-item">
-                <div className="legend-color specialist"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                 <span>Specialist Clinic</span>
               </div>
-              <div className="legend-item">
-                <div className="legend-color general"></div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 <span>General Hospital</span>
               </div>
             </div>
           </div>
 
-          <div className="map-sidebar">
-            <h3>Nearby Hospitals</h3>
-            {filteredHospitals.map((hospital) => (
-              <Card
-                key={hospital.id}
-                variant="outlined"
-                className="sidebar-hospital-card"
-              >
-                <div className="sidebar-hospital-content">
-                  <h4>{hospital.name}</h4>
-                  <div className="sidebar-hospital-distance">
-                    <Icon name="distance" />
-                    <span>{hospital.distance}</span>
-                  </div>
-                  <div className="sidebar-hospital-rating">
-                    <Icon name="star" />
-                    <span>{hospital.rating}</span>
+          <div className="h-48 md:h-full md:w-80 flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-3 border-b border-gray-100 bg-gray-50">
+              <h3 className="font-bold text-gray-700">Nearby Hospitals</h3>
+            </div>
+            <div className="overflow-y-auto p-3 space-y-3 flex-1">
+              {filteredHospitals.map((hospital) => (
+                <div
+                  key={hospital.id}
+                  className="bg-white border border-gray-200 rounded-lg p-3 hover:border-primary cursor-pointer transition-colors"
+                  onClick={() => selectHospital(hospital)}
+                >
+                  <h4 className="font-bold text-sm text-gray-800 mb-1 line-clamp-1">
+                    {hospital.name}
+                  </h4>
+                  <div className="flex justify-between items-center text-xs text-gray-500 mb-2">
+                    <span className="flex items-center gap-1">
+                      <Icon name="distance" className="text-[10px]" />{" "}
+                      {hospital.distance}
+                    </span>
+                    <span className="flex items-center gap-1 text-yellow-600 font-medium">
+                      <Icon name="star" className="text-[10px]" />{" "}
+                      {hospital.rating}
+                    </span>
                   </div>
                   <Button
-                    variant="primary"
+                    variant="secondary"
                     size="small"
-                    onClick={() => selectHospital(hospital)}
+                    className="w-full text-xs h-7 min-h-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      selectHospital(hospital);
+                    }}
                   >
                     View Details
                   </Button>
                 </div>
-              </Card>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
 
       {selectedHospital && (
-        <div className="hospital-detail-overlay" onClick={closeHospitalDetails}>
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-4 animate-in fade-in duration-200"
+          onClick={closeHospitalDetails}
+        >
           <div
-            className="hospital-detail-modal"
+            className="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 duration-300 flex flex-col max-h-[90vh]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-header">
-              <h2>{selectedHospital.name}</h2>
+            <div className="flex justify-between items-center p-4 border-b border-gray-100 shrink-0">
+              <h2 className="text-xl font-bold line-clamp-1 pr-4">
+                {selectedHospital.name}
+              </h2>
               <Button
-                variant="icon"
+                variant="ghost"
                 onClick={closeHospitalDetails}
-                className="close-button"
+                className="w-8 h-8 rounded-full p-0 flex items-center justify-center hover:bg-gray-100 shrink-0"
               >
                 <Icon name="close" />
               </Button>
             </div>
 
-            <div className="modal-content">
-              <div className="hospital-detail-content">
-                <div className="detail-section">
-                  <h3>
-                    <Icon name="location" /> Address
+            <div className="overflow-y-auto p-6">
+              <div className="space-y-6">
+                <div className="flex flex-col gap-2">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    <Icon name="location" className="text-primary" /> Address
                   </h3>
-                  <p>{selectedHospital.address}</p>
+                  <p className="text-gray-800 pl-6">
+                    {selectedHospital.address}
+                  </p>
                 </div>
 
-                <div className="detail-section">
-                  <h3>
-                    <Icon name="phone" /> Contact
+                <div className="flex flex-col gap-2">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    <Icon name="phone" className="text-primary" /> Contact
                   </h3>
-                  <p>{selectedHospital.phone}</p>
+                  <p className="text-gray-800 pl-6 font-medium text-lg">
+                    {selectedHospital.phone}
+                  </p>
                 </div>
 
-                <div className="detail-section">
-                  <h3>
-                    <Icon name="clock" /> Hours
+                <div className="flex flex-col gap-2">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    <Icon name="clock" className="text-primary" /> Hours
                   </h3>
-                  <p>{selectedHospital.hours}</p>
+                  <p className="text-green-700 bg-green-50 inline-block px-3 py-1 rounded-lg ml-6 self-start font-medium">
+                    {selectedHospital.hours}
+                  </p>
                 </div>
 
-                <div className="detail-section">
-                  <h3>
-                    <Icon name="services" /> Services
+                <div className="flex flex-col gap-2">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-gray-500 uppercase tracking-wider">
+                    <Icon name="services" className="text-primary" /> Services
                   </h3>
-                  <div className="services-grid">
+                  <div className="grid grid-cols-2 gap-2 pl-6">
                     {selectedHospital.services.map((service, index) => (
-                      <div key={index} className="service-item">
-                        <Icon name="check" />
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm text-gray-700 bg-gray-50 px-2 py-1.5 rounded"
+                      >
+                        <Icon name="check" className="text-green-500 text-xs" />
                         <span>{service}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="detail-section">
-                  <h3>
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+                  <h3 className="flex items-center gap-2 text-sm font-bold text-blue-800 mb-3">
                     <Icon name="info" /> Current Information
                   </h3>
-                  <div className="info-grid">
-                    <div className="info-item">
-                      <span className="info-label">Rating:</span>
-                      <span className="info-value">
-                        <Icon name="star" />
+                  <div className="grid grid-cols-3 gap-4 text-center divide-x divide-blue-200">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs text-blue-600 mb-1 uppercase font-semibold">
+                        Rating
+                      </span>
+                      <span className="font-bold text-gray-800 flex items-center gap-1">
+                        <Icon name="star" className="text-yellow-500" />
                         {selectedHospital.rating}
                       </span>
                     </div>
-                    <div className="info-item">
-                      <span className="info-label">Distance:</span>
-                      <span className="info-value">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs text-blue-600 mb-1 uppercase font-semibold">
+                        Dist
+                      </span>
+                      <span className="font-bold text-gray-800">
                         {selectedHospital.distance}
                       </span>
                     </div>
-                    <div className="info-item">
-                      <span className="info-label">Wait Time:</span>
-                      <span className="info-value">
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs text-blue-600 mb-1 uppercase font-semibold">
+                        Wait
+                      </span>
+                      <span className="font-bold text-green-600">
                         {selectedHospital.waitTime}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="modal-actions">
+                <div className="grid grid-cols-2 gap-3 pt-2">
                   <Button
                     variant="primary"
                     onClick={() => handleCallHospital(selectedHospital.phone)}
-                    className="modal-action-btn"
+                    className="justify-center h-12 shadow-md"
                   >
                     <Icon name="call" /> Call Hospital
                   </Button>
@@ -373,7 +438,7 @@ const EnhancedHospitalLocatorScreen = () => {
                     onClick={() =>
                       handleGetDirections(selectedHospital.address)
                     }
-                    className="modal-action-btn"
+                    className="justify-center h-12"
                   >
                     <Icon name="directions" /> Get Directions
                   </Button>

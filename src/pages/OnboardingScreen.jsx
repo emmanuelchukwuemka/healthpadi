@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
-import "../App.css";
 
 const OnboardingScreen = () => {
   const navigate = useNavigate();
@@ -56,23 +55,25 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <div className="onboarding-screen">
-      <div className="onboarding-content">
-        <div className="carousel-container">
-          <div className="carousel-slide">
-            <div className="slide-icon">{slides[currentSlide].icon}</div>
-            <h1 className="slide-title">{slides[currentSlide].title}</h1>
-            <p className="slide-description">
+    <div className="h-screen flex flex-col justify-center items-center p-5 bg-background text-center">
+      <div className="max-w-[400px] w-full flex flex-col items-center bg-white p-8 rounded-xl shadow-lg">
+        <div className="flex-1 flex flex-col justify-center items-center w-full">
+          <div className="mb-8">
+            <div className="text-6xl mb-4">{slides[currentSlide].icon}</div>
+            <h1 className="text-2xl font-bold mb-2 text-primary">
+              {slides[currentSlide].title}
+            </h1>
+            <p className="text-gray-600 mb-8">
               {slides[currentSlide].description}
             </p>
           </div>
 
-          <div className="carousel-indicators">
+          <div className="flex gap-2 justify-center mb-8">
             {slides.map((_, index) => (
               <button
                 key={index}
-                className={`indicator ${
-                  index === currentSlide ? "active" : ""
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  index === currentSlide ? "bg-primary w-4" : "bg-gray-300"
                 }`}
                 onClick={() => setCurrentSlide(index)}
               />
@@ -80,22 +81,24 @@ const OnboardingScreen = () => {
           </div>
         </div>
 
-        <div className="carousel-navigation">
-          {currentSlide > 0 && (
+        <div className="flex justify-between w-full mt-4">
+          {currentSlide > 0 ? (
             <Button
               variant="secondary"
               onClick={prevSlide}
-              className="nav-button prev-button"
+              className="flex items-center gap-2 mr-auto"
             >
               <Icon name="arrowBack" /> Previous
             </Button>
+          ) : (
+            <div />
           )}
 
           {currentSlide < slides.length - 1 ? (
             <Button
               variant="primary"
               onClick={nextSlide}
-              className="nav-button next-button"
+              className="flex items-center gap-2 ml-auto"
             >
               Next <Icon name="arrowForward" />
             </Button>
@@ -103,7 +106,7 @@ const OnboardingScreen = () => {
             <Button
               variant="primary"
               onClick={handleGetStarted}
-              className="nav-button get-started-button"
+              className="flex items-center gap-2 ml-auto"
             >
               Get Started
             </Button>

@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../App.css';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SplashScreen = () => {
   const navigate = useNavigate();
@@ -8,17 +7,17 @@ const SplashScreen = () => {
   useEffect(() => {
     // Automatically navigate to welcome screen after 3 seconds
     const timer = setTimeout(() => {
-      navigate('/welcome');
+      navigate("/welcome");
     }, 3000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
-    <div className="splash-screen">
-      <div className="splash-content">
-        <div className="logo">HealthPadi</div>
-        <p className="tagline">Your Health Companion</p>
+    <div className="flex justify-center items-center h-screen bg-primary text-white">
+      <div className="text-center">
+        <div className="text-5xl font-bold mb-5">HealthPadi</div>
+        <p className="text-xl">Your Health Companion</p>
       </div>
     </div>
   );

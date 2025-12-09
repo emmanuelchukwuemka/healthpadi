@@ -1,11 +1,19 @@
 import React from "react";
-import "@/App.css";
 
 const Icon = ({ name, size = "medium", color, className = "", ...props }) => {
-  const baseClasses = "icon";
-  const sizeClasses = `icon-${size}`;
+  const baseClasses = "inline-block leading-none";
 
-  const classNames = [baseClasses, sizeClasses, className]
+  const sizeClasses = {
+    small: "text-sm",
+    medium: "text-base",
+    large: "text-xl",
+  };
+
+  const classNames = [
+    baseClasses,
+    sizeClasses[size] || sizeClasses.medium,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 
@@ -27,6 +35,9 @@ const Icon = ({ name, size = "medium", color, className = "", ...props }) => {
     check: "✅",
     warning: "⚠️",
     info: "ℹ️",
+    spinner: "⚡", // Using a lightning bolt as placeholder for spinner
+    google: "G", // Placeholder
+    facebook: "f", // Placeholder
   };
 
   const icon = iconMap[name] || "🔹";

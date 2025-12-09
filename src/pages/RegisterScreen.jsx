@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
-import "../App.css";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -100,15 +99,17 @@ const RegisterScreen = () => {
   };
 
   return (
-    <div className="auth-screen">
-      <div className="auth-container">
-        <div className="auth-header">
-          <h1>Create Account</h1>
-          <p>Join HealthPadi to start your health journey</p>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 py-8">
+      <div className="bg-white w-full max-w-md p-8 rounded-2xl shadow-xl">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold mb-2">Create Account</h1>
+          <p className="text-gray-600">
+            Join HealthPadi to start your health journey
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-row">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <div className="flex gap-4">
             <Input
               label="First Name"
               id="firstName"
@@ -165,11 +166,15 @@ const RegisterScreen = () => {
             helperText={errors.confirmPassword}
           />
 
-          <div className="terms-agreement">
-            <label className="checkbox-container">
-              <input type="checkbox" />
-              <span className="checkmark"></span>I agree to the Terms of Service
-              and Privacy Policy
+          <div className="text-sm">
+            <label className="flex items-start gap-2 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                className="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+              />
+              <span className="text-gray-600 leading-tight">
+                I agree to the Terms of Service and Privacy Policy
+              </span>
             </label>
           </div>
 
@@ -178,26 +183,29 @@ const RegisterScreen = () => {
             variant="primary"
             fullWidth
             disabled={isLoading}
-            className="auth-button"
+            className="mt-2"
           >
             {isLoading ? (
-              <>
-                <Icon name="spinner" className="spin" /> Creating Account...
-              </>
+              <span className="flex items-center gap-2">
+                <Icon name="spinner" className="animate-spin" /> Creating
+                Account...
+              </span>
             ) : (
               "Create Account"
             )}
           </Button>
         </form>
 
-        <div className="social-login">
-          <p className="divider">or continue with</p>
-          <div className="social-buttons">
+        <div className="mt-8 text-center">
+          <p className="text-gray-400 text-sm mb-4 relative flex items-center justify-center before:content-[''] before:flex-1 before:border-b before:border-gray-200 before:mr-4 after:content-[''] after:flex-1 after:border-b after:border-gray-200 after:ml-4">
+            or continue with
+          </p>
+          <div className="flex gap-4 justify-center">
             <Button
               variant="secondary"
               onClick={handleGoogleRegister}
               disabled={isLoading}
-              className="social-button"
+              className="flex items-center gap-2 flex-1"
             >
               <Icon name="google" /> Google
             </Button>
@@ -205,17 +213,20 @@ const RegisterScreen = () => {
               variant="secondary"
               onClick={handleFacebookRegister}
               disabled={isLoading}
-              className="social-button"
+              className="flex items-center gap-2 flex-1"
             >
               <Icon name="facebook" /> Facebook
             </Button>
           </div>
         </div>
 
-        <div className="auth-footer">
+        <div className="mt-8 text-center text-sm text-gray-600">
           <p>
             Already have an account?{" "}
-            <button className="link-button" onClick={() => navigate("/login")}>
+            <button
+              className="text-primary font-bold hover:underline bg-transparent border-none cursor-pointer p-0 ml-1"
+              onClick={() => navigate("/login")}
+            >
               Sign In
             </button>
           </p>

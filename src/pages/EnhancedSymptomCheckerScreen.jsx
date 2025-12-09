@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
-import "../App.css";
+import Badge from "@/components/common/Badge";
+import ChatBubble from "@/components/common/ChatBubble";
 
 const EnhancedSymptomCheckerScreen = () => {
   const [userMessage, setUserMessage] = useState("");
@@ -139,37 +140,45 @@ const EnhancedSymptomCheckerScreen = () => {
   };
 
   return (
-    <div className="enhanced-symptom-checker-screen">
-      <div className="symptom-header">
-        <div className="header-content">
-          <h1>Symptom Checker</h1>
-          <div className="header-actions">
+    <div className="flex flex-col h-[calc(100vh-64px)] bg-gray-50">
+      <div className="bg-white p-4 shadow-sm z-10 sticky top-0">
+        <div className="flex justify-between items-center mb-2">
+          <h1 className="text-xl font-bold text-gray-800">Symptom Checker</h1>
+          <div className="flex gap-2">
             <Button
               variant="secondary"
               size="small"
               onClick={handleSaveConversation}
+              className="flex items-center gap-1"
             >
-              <Icon name="save" /> Save
+              <Icon name="save" className="text-sm" /> Save
             </Button>
-            <Button variant="secondary" size="small" onClick={handleClearChat}>
-              <Icon name="close" /> Clear
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={handleClearChat}
+              className="flex items-center gap-1"
+            >
+              <Icon name="close" className="text-sm" /> Clear
             </Button>
           </div>
         </div>
-        <p className="header-subtitle">
+        <p className="text-gray-500 text-sm">
           Describe your symptoms and get personalized health insights
         </p>
       </div>
 
-      <div className="symptom-conversation-container">
-        <div className="symptom-conversation">
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex flex-col gap-4 max-w-3xl mx-auto pb-4">
           {conversation.length === 0 ? (
-            <div className="empty-conversation">
-              <div className="empty-icon">
+            <div className="flex flex-col items-center justify-center mt-20 text-center text-gray-500">
+              <div className="text-6xl mb-4 text-primary/20 bg-primary/5 p-6 rounded-full">
                 <Icon name="chat" size="large" />
               </div>
-              <h3>How are you feeling today?</h3>
-              <p>
+              <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                How are you feeling today?
+              </h3>
+              <p className="max-w-xs">
                 Describe your symptoms and I'll provide personalized health
                 insights
               </p>
@@ -177,79 +186,93 @@ const EnhancedSymptomCheckerScreen = () => {
           ) : (
             <>
               {conversation.map((message) => (
-                <ChatBubble
-                  key={message.id}
-                  message={message.text}
-                  sender={message.sender}
-                  timestamp={message.timestamp}
-                  className={`message-bubble ${
-                    message.sender === "user" ? "user-message" : "ai-message"
-                  }`}
-                >
-                  {message.sender === "ai" && (
-                    <div className="ai-response-content">
-                      <div className="response-section">
-                        <h4>
-                          <Icon name="info" /> Summary
-                        </h4>
-                        <p>{message.summary}</p>
-                      </div>
-
-                      <div className="response-section">
-                        <h4>
-                          <Icon name="warning" /> Urgency Level
-                        </h4>
-                        <Badge
-                          variant={
-                            message.urgency === "High"
-                              ? "danger"
-                              : message.urgency === "Moderate"
-                              ? "warning"
-                              : "success"
-                          }
-                          className="urgency-badge"
-                        >
-                          {message.urgency}
-                        </Badge>
-                      </div>
-
-                      <div className="response-section">
-                        <h4>
-                          <Icon name="check" /> Recommended Next Steps
-                        </h4>
-                        <p>{message.nextSteps}</p>
-                      </div>
-
-                      {message.firstAid && (
-                        <div className="response-section">
-                          <h4>
-                            <Icon name="firstaid" /> First-Aid Advice
+                <div key={message.id}>
+                  {message.sender === "user" ? (
+                    <ChatBubble
+                      message={message.text}
+                      sender="user"
+                      timestamp={message.timestamp}
+                    />
+                  ) : (
+                    <div className="flex flex-col max-w-[85%] bg-white rounded-2xl rounded-tl-none p-4 shadow-sm border border-gray-100 mr-auto self-start">
+                      <div className="space-y-4">
+                        <div className="bg-blue-50/50 rounded-xl p-3 border border-blue-50">
+                          <h4 className="font-semibold text-sm mb-1 text-primary flex items-center gap-2">
+                            <Icon name="info" className="text-primary" />{" "}
+                            Summary
                           </h4>
-                          <p>{message.firstAid}</p>
+                          <p className="text-sm text-gray-700">
+                            {message.summary}
+                          </p>
                         </div>
-                      )}
 
-                      <div className="response-section disclaimer-section">
-                        <p>
-                          <Icon name="warning" /> {message.disclaimer}
-                        </p>
+                        <div className="bg-gray-50 rounded-xl p-3 border border-gray-100 flex items-center justify-between">
+                          <h4 className="font-semibold text-sm text-gray-700 flex items-center gap-2">
+                            <Icon name="warning" className="text-orange-500" />{" "}
+                            Urgency Level
+                          </h4>
+                          <Badge
+                            variant={
+                              message.urgency === "High"
+                                ? "danger"
+                                : message.urgency === "Moderate"
+                                ? "warning"
+                                : "success"
+                            }
+                          >
+                            {message.urgency}
+                          </Badge>
+                        </div>
+
+                        <div className="bg-green-50/50 rounded-xl p-3 border border-green-50">
+                          <h4 className="font-semibold text-sm mb-1 text-green-700 flex items-center gap-2">
+                            <Icon name="check" className="text-green-600" />{" "}
+                            Recommended Next Steps
+                          </h4>
+                          <p className="text-sm text-gray-700">
+                            {message.nextSteps}
+                          </p>
+                        </div>
+
+                        {message.firstAid && (
+                          <div className="bg-red-50/50 rounded-xl p-3 border border-red-50">
+                            <h4 className="font-semibold text-sm mb-1 text-red-700 flex items-center gap-2">
+                              <Icon name="symptom" className="text-red-500" />{" "}
+                              First-Aid Advice
+                            </h4>
+                            <p className="text-sm text-gray-700">
+                              {message.firstAid}
+                            </p>
+                          </div>
+                        )}
+
+                        <div className="bg-yellow-50 rounded-lg p-3 border border-yellow-100 text-xs text-yellow-800 flex items-start gap-2">
+                          <Icon
+                            name="warning"
+                            className="text-yellow-600 shrink-0 mt-0.5"
+                          />
+                          <span>{message.disclaimer}</span>
+                        </div>
+
+                        <Button
+                          variant="primary"
+                          onClick={handleSeeDoctor}
+                          className="w-full justify-center flex items-center gap-2"
+                        >
+                          <Icon name="doctor" /> See a Doctor
+                        </Button>
                       </div>
-
-                      <Button
-                        variant="primary"
-                        onClick={handleSeeDoctor}
-                        className="see-doctor-btn"
-                      >
-                        <Icon name="doctor" /> See a Doctor
-                      </Button>
+                      <div className="text-[10px] text-gray-400 mt-2 text-right">
+                        {message.timestamp}
+                      </div>
                     </div>
                   )}
-                </ChatBubble>
+                </div>
               ))}
               {isLoading && (
-                <div className="loading-indicator">
-                  <Icon name="spinner" className="spin" /> HealthPadi is
-                  thinking...
+                <div className="flex items-center justify-center gap-2 text-gray-500 text-sm py-4">
+                  <Icon name="spinner" className="animate-spin text-primary" />{" "}
+                  HealthPadi is thinking...
                 </div>
               )}
               <div ref={messagesEndRef} />
@@ -258,9 +281,11 @@ const EnhancedSymptomCheckerScreen = () => {
         </div>
       </div>
 
-      <div className="quick-symptoms">
-        <h3>Quick Symptoms:</h3>
-        <div className="symptom-chips">
+      <div className="p-4 bg-white border-t border-gray-100 shadow-[0_-2px_10px_rgba(0,0,0,0.02)]">
+        <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+          Quick Symptoms:
+        </h3>
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none mb-3">
           {quickSymptoms.map((symptom, index) => (
             <Button
               key={index}
@@ -268,35 +293,37 @@ const EnhancedSymptomCheckerScreen = () => {
               size="small"
               onClick={() => handleQuickSymptom(symptom)}
               disabled={isLoading}
-              className="symptom-chip"
+              className="whitespace-nowrap shrink-0 rounded-full px-4 text-xs font-normal bg-gray-100 hover:bg-gray-200 border-none"
             >
               {symptom}
             </Button>
           ))}
         </div>
-      </div>
 
-      <div className="message-input-container">
-        <div className="input-wrapper">
-          <input
-            type="text"
-            value={userMessage}
-            onChange={(e) => setUserMessage(e.target.value)}
-            placeholder="Describe how you're feeling..."
-            className="message-input"
-            onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-            disabled={isLoading}
-          />
-          <Button
-            variant="primary"
-            onClick={handleSendMessage}
-            disabled={!userMessage.trim() || isLoading}
-            className="send-button"
-          >
-            <Icon name="send" />
-          </Button>
+        <div className="max-w-3xl mx-auto">
+          <div className="flex gap-2 items-center">
+            <input
+              type="text"
+              value={userMessage}
+              onChange={(e) => setUserMessage(e.target.value)}
+              placeholder="Describe how you're feeling..."
+              className="flex-1 bg-gray-100 rounded-full px-5 py-3 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all text-sm"
+              onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              disabled={isLoading}
+            />
+            <Button
+              variant="primary"
+              onClick={handleSendMessage}
+              disabled={!userMessage.trim() || isLoading}
+              className="rounded-full w-12 h-12 p-0 flex items-center justify-center shrink-0 shadow-md transform active:scale-95 transition-all"
+            >
+              <Icon name="chat" className="text-white" />
+            </Button>
+          </div>
+          <p className="text-xs text-center text-gray-400 mt-2">
+            Press Enter to send
+          </p>
         </div>
-        <p className="input-hint">Press Enter to send</p>
       </div>
     </div>
   );

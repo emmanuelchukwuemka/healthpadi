@@ -1,6 +1,5 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "@/App.css";
 
 const BottomNavigation = () => {
   const navigate = useNavigate();
@@ -19,23 +18,23 @@ const BottomNavigation = () => {
   };
 
   return (
-    <div className="bottom-navigation">
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border flex justify-around p-3 z-50 md:hidden">
       {navItems.map((item) => (
         <button
           key={item.id}
-          className={`nav-item ${
-            location.pathname === item.path ? "active" : ""
+          className={`flex flex-col items-center bg-transparent border-none p-2 text-gray-400 text-xs transition-colors ${
+            location.pathname === item.path ? "text-primary" : ""
           }`}
           onClick={() => handleNavigation(item.path)}
         >
-          <div className="nav-icon">
+          <div className="text-xl mb-1">
             {item.id === "home" && "🏠"}
             {item.id === "symptom" && "🩺"}
             {item.id === "hospital" && "🏥"}
             {item.id === "doctors" && "👨‍⚕️"}
             {item.id === "profile" && "👤"}
           </div>
-          <span className="nav-label">{item.label}</span>
+          <span className="text-xs">{item.label}</span>
         </button>
       ))}
     </div>

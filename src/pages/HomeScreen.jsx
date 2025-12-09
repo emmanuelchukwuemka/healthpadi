@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "@/components/layout/BottomNavigation";
-import "../App.css";
 
 const HomeScreen = () => {
   const navigate = useNavigate();
@@ -42,38 +41,53 @@ const HomeScreen = () => {
   ];
 
   return (
-    <div className="home-screen">
-      <div className="home-header">
-        <h1>Good morning, {userName} 👋</h1>
+    <div className="p-5 max-w-[800px] mx-auto pb-24">
+      <div className="mb-8">
+        <h1 className="mt-0 font-bold text-3xl">Good morning, {userName} 👋</h1>
       </div>
 
-      <div className="quick-actions">
-        <h2>Quick Actions</h2>
-        <div className="action-buttons">
-          <button className="action-button" onClick={handleSymptomChecker}>
-            <div className="action-icon">🩺</div>
+      <div className="mb-8">
+        <h2 className="mt-8 mb-4 font-semibold text-xl">Quick Actions</h2>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <button
+            className="bg-white border border-border rounded-xl p-5 flex flex-col items-center text-center shadow-lg hover:shadow-xl transition-shadow"
+            onClick={handleSymptomChecker}
+          >
+            <div className="text-3xl mb-2">🩺</div>
             <span>How are you feeling?</span>
           </button>
-          <button className="action-button" onClick={handleEmergencyFirstAid}>
-            <div className="action-icon">🚨</div>
+          <button
+            className="bg-white border border-border rounded-xl p-5 flex flex-col items-center text-center shadow-lg hover:shadow-xl transition-shadow"
+            onClick={handleEmergencyFirstAid}
+          >
+            <div className="text-3xl mb-2">🚨</div>
             <span>Emergency First Aid</span>
           </button>
-          <button className="action-button" onClick={handleFindHospital}>
-            <div className="action-icon">🏥</div>
+          <button
+            className="bg-white border border-border rounded-xl p-5 flex flex-col items-center text-center shadow-lg hover:shadow-xl transition-shadow"
+            onClick={handleFindHospital}
+          >
+            <div className="text-3xl mb-2">🏥</div>
             <span>Find Hospital / Clinic</span>
           </button>
-          <button className="action-button" onClick={handleBookDoctor}>
-            <div className="action-icon">📅</div>
+          <button
+            className="bg-white border border-border rounded-xl p-5 flex flex-col items-center text-center shadow-lg hover:shadow-xl transition-shadow"
+            onClick={handleBookDoctor}
+          >
+            <div className="text-3xl mb-2">📅</div>
             <span>Book a Doctor</span>
           </button>
         </div>
       </div>
 
-      <div className="recent-activity">
-        <h2>Recent Activity</h2>
-        <div className="activity-list">
+      <div className="mb-8">
+        <h2 className="mt-8 mb-4 font-semibold text-xl">Recent Activity</h2>
+        <div className="bg-white rounded-xl p-5 shadow-lg">
           {recentActivity.map((activity) => (
-            <div key={activity.id} className="activity-item">
+            <div
+              key={activity.id}
+              className="py-4 border-b border-border last:border-0 text-left"
+            >
               <div className="activity-content">
                 {activity.type === "symptom" ? (
                   <p>
@@ -92,11 +106,13 @@ const HomeScreen = () => {
         </div>
       </div>
 
-      <div className="health-tips">
-        <h2>Health Tip of the Day</h2>
-        <div className="tips-carousel">
+      <div className="mb-8">
+        <h2 className="mt-8 mb-4 font-semibold text-xl">
+          Health Tip of the Day
+        </h2>
+        <div className="bg-white rounded-xl p-5 shadow-lg">
           {healthTips.map((tip) => (
-            <div key={tip.id} className="tip-item">
+            <div key={tip.id} className="py-2">
               <p>{tip.tip}</p>
             </div>
           ))}

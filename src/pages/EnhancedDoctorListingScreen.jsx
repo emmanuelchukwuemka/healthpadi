@@ -4,7 +4,7 @@ import DoctorCard from "@/components/common/DoctorCard";
 import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import Icon from "@/components/common/Icon";
-import "../App.css";
+import SearchBar from "@/components/common/SearchBar";
 
 const EnhancedDoctorListingScreen = () => {
   const navigate = useNavigate();
@@ -122,64 +122,66 @@ const EnhancedDoctorListingScreen = () => {
   };
 
   return (
-    <div className="enhanced-doctor-listing-screen">
-      <div className="doctor-listing-header">
-        <h1>Find a Doctor</h1>
-        <p>
+    <div className="min-h-screen bg-gray-50 pb-24">
+      <div className="bg-primary text-white pt-12 pb-24 px-6 rounded-b-[40px] shadow-lg mb-[-40px] relative z-0">
+        <h1 className="text-2xl font-bold mb-2">Find a Doctor</h1>
+        <p className="opacity-90 max-w-md">
           Browse and book appointments with top-rated healthcare professionals
         </p>
       </div>
 
-      <div className="doctor-filters">
-        <div className="filter-row">
+      <div className="px-4 max-w-4xl mx-auto relative z-10">
+        <div className="bg-white p-4 rounded-xl shadow-lg flex flex-col md:flex-row gap-4">
           <SearchBar
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search doctors or specialties..."
-            className="search-filter"
+            className="flex-1 min-w-[200px]"
           />
 
-          <select
-            value={selectedSpecialty}
-            onChange={(e) => setSelectedSpecialty(e.target.value)}
-            className="filter-select"
-          >
-            <option value="">All Specialties</option>
-            {specialties.map((specialty) => (
-              <option key={specialty} value={specialty}>
-                {specialty}
-              </option>
-            ))}
-          </select>
+          <div className="flex gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+            <select
+              value={selectedSpecialty}
+              onChange={(e) => setSelectedSpecialty(e.target.value)}
+              className="bg-gray-50 border-none rounded-lg px-4 py-2 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="">All Specialties</option>
+              {specialties.map((specialty) => (
+                <option key={specialty} value={specialty}>
+                  {specialty}
+                </option>
+              ))}
+            </select>
 
-          <select
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className="filter-select"
-          >
-            <option value="">All Locations</option>
-            {locations.map((location) => (
-              <option key={location} value={location}>
-                {location}
-              </option>
-            ))}
-          </select>
+            <select
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="bg-gray-50 border-none rounded-lg px-4 py-2 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="">All Locations</option>
+              {locations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
 
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="filter-select"
-          >
-            <option value="rating">Sort by Rating</option>
-            <option value="experience">Sort by Experience</option>
-            <option value="fee">Sort by Fee (Low to High)</option>
-          </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="bg-gray-50 border-none rounded-lg px-4 py-2 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer min-w-[140px]"
+            >
+              <option value="rating">Sort by Rating</option>
+              <option value="experience">Sort by Experience</option>
+              <option value="fee">Sort by Fee (Low to High)</option>
+            </select>
+          </div>
 
           {(searchTerm || selectedSpecialty || selectedLocation) && (
             <Button
               variant="secondary"
               onClick={handleClearFilters}
-              className="clear-filters-btn"
+              className="whitespace-nowrap md:w-auto w-full"
             >
               Clear Filters
             </Button>
@@ -187,13 +189,13 @@ const EnhancedDoctorListingScreen = () => {
         </div>
       </div>
 
-      <div className="doctor-results-summary">
+      <div className="max-w-4xl mx-auto px-6 mt-8 mb-4 text-gray-500 text-sm font-medium">
         <p>
           Showing {filteredDoctors.length} of {doctors.length} doctors
         </p>
       </div>
 
-      <div className="doctor-list">
+      <div className="max-w-4xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-4 pb-8">
         {filteredDoctors.length > 0 ? (
           filteredDoctors.map((doctor) => (
             <DoctorCard
@@ -201,14 +203,20 @@ const EnhancedDoctorListingScreen = () => {
               doctor={doctor}
               onBookAppointment={() => handleBookAppointment(doctor.id)}
               onViewProfile={() => handleViewProfile(doctor.id)}
-              className="doctor-card-item"
+              className="h-full"
             />
           ))
         ) : (
-          <div className="no-doctors-found">
-            <Icon name="search" size="large" />
-            <h3>No doctors found</h3>
-            <p>Try adjusting your search criteria</p>
+          <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+            <div className="text-6xl text-gray-200 mb-4">
+              <Icon name="search" size="large" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-700 mb-2">
+              No doctors found
+            </h3>
+            <p className="text-gray-500 mb-6">
+              Try adjusting your search criteria
+            </p>
             <Button variant="primary" onClick={handleClearFilters}>
               Clear Filters
             </Button>
@@ -216,11 +224,14 @@ const EnhancedDoctorListingScreen = () => {
         )}
       </div>
 
-      <div className="booking-info-banner">
-        <Icon name="info" />
-        <p>
-          All appointments are confirmed instantly. Cancellation policy applies.
-        </p>
+      <div className="max-w-4xl mx-auto px-4 mb-8">
+        <div className="bg-blue-50 text-blue-700 p-4 rounded-xl flex items-center gap-3 text-sm border border-blue-100">
+          <Icon name="info" />
+          <p>
+            All appointments are confirmed instantly. Cancellation policy
+            applies.
+          </p>
+        </div>
       </div>
     </div>
   );

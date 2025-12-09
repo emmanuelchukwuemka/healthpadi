@@ -1,11 +1,19 @@
 import React from "react";
-import "@/App.css";
 
 const Card = ({ children, variant = "elevated", className = "", ...props }) => {
-  const baseClasses = "card";
-  const variantClasses = `card-${variant}`;
+  const baseClasses = "bg-white rounded-xl p-5";
 
-  const classNames = [baseClasses, variantClasses, className]
+  const variantClasses = {
+    elevated: "shadow-lg",
+    outlined: "border border-gray-200",
+    flat: "bg-gray-50",
+  };
+
+  const classNames = [
+    baseClasses,
+    variantClasses[variant] || variantClasses.elevated,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 

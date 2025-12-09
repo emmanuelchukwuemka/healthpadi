@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "@/components/layout/BottomNavigation";
-import "../App.css";
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
@@ -68,82 +67,108 @@ const ProfileScreen = () => {
   };
 
   return (
-    <div className="profile-screen">
-      <div className="profile-header">
-        <h1>My Profile</h1>
-        <button className="settings-btn" onClick={handleSettings}>
+    <div className="p-5 max-w-[800px] mx-auto pb-24">
+      <div className="flex justify-between items-center mb-5">
+        <h1 className="text-2xl font-bold m-0">My Profile</h1>
+        <button
+          className="text-gray-500 border border-border px-3 py-1 rounded text-sm hover:bg-gray-50 transition-colors"
+          onClick={handleSettings}
+        >
           Settings
         </button>
       </div>
 
-      <div className="profile-section">
-        <div className="profile-info">
-          <div className="profile-avatar">👤</div>
-          <div className="profile-details">
-            <h2>{userData.name}</h2>
-            <p>📞 {userData.phone}</p>
-            <p>✉️ {userData.email}</p>
+      <div className="bg-white rounded-xl p-5 shadow-lg mb-5">
+        <div className="flex items-center gap-4 mb-5 pb-5 border-b border-border">
+          <div className="text-4xl bg-gray-100 rounded-full w-20 h-20 flex items-center justify-center shrink-0">
+            👤
           </div>
-          <button className="edit-profile-btn" onClick={handleEditProfile}>
+          <div className="flex-1">
+            <h2 className="text-xl font-bold m-0 mb-1">{userData.name}</h2>
+            <p className="text-gray-600 m-0 mb-1">📞 {userData.phone}</p>
+            <p className="text-gray-600 m-0">✉️ {userData.email}</p>
+          </div>
+          <button
+            className="text-primary text-sm border border-primary px-3 py-1 rounded hover:bg-primary/5 transition-colors"
+            onClick={handleEditProfile}
+          >
             Edit Profile
           </button>
         </div>
 
-        <div className="emergency-contact">
-          <h3>Emergency Contact</h3>
-          <p>
-            <strong>Name:</strong> {userData.emergencyContact.name}
+        <div className="mb-6">
+          <h3 className="text-lg font-bold mb-3 border-b border-gray-100 pb-2">
+            Emergency Contact
+          </h3>
+          <p className="mb-2">
+            <strong className="text-gray-700">Name:</strong>{" "}
+            {userData.emergencyContact.name}
           </p>
-          <p>
-            <strong>Phone:</strong> {userData.emergencyContact.phone}
+          <p className="mb-3">
+            <strong className="text-gray-700">Phone:</strong>{" "}
+            {userData.emergencyContact.phone}
           </p>
-          <button className="edit-emergency-btn">Edit Contact</button>
+          <button className="text-primary text-sm font-medium hover:underline">
+            Edit Contact
+          </button>
         </div>
 
-        <div className="medical-info">
-          <h3>Medical Information</h3>
-          <p>
-            <strong>Blood Group:</strong> {userData.medicalInfo.bloodGroup}
+        <div>
+          <h3 className="text-lg font-bold mb-3 border-b border-gray-100 pb-2">
+            Medical Information
+          </h3>
+          <p className="mb-2">
+            <strong className="text-gray-700">Blood Group:</strong>{" "}
+            {userData.medicalInfo.bloodGroup}
+          </p>
+          <p className="mb-2">
+            <strong className="text-gray-700">Allergies:</strong>{" "}
+            {userData.medicalInfo.allergies}
           </p>
           <p>
-            <strong>Allergies:</strong> {userData.medicalInfo.allergies}
-          </p>
-          <p>
-            <strong>Chronic Conditions:</strong>{" "}
+            <strong className="text-gray-700">Chronic Conditions:</strong>{" "}
             {userData.medicalInfo.chronicConditions}
           </p>
         </div>
       </div>
 
-      <div className="health-records-section">
-        <div className="records-header">
-          <h2>Health Records</h2>
+      <div className="bg-white rounded-xl p-5 shadow-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-lg font-bold m-0">Health Records</h2>
           <button
-            className="upload-prescription-btn"
+            className="bg-primary text-white text-xs px-3 py-2 rounded hover:opacity-90 transition-opacity"
             onClick={handleUploadPrescription}
           >
             Upload Prescription
           </button>
         </div>
 
-        <div className="health-records">
+        <div className="flex flex-col gap-3">
           {healthRecords.map((record) => (
             <div
               key={record.id}
-              className="record-item"
+              className="flex gap-4 p-3 border border-gray-100 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
               onClick={() => handleViewRecord(record.id)}
             >
-              <div className="record-date">{record.date}</div>
+              <div className="text-gray-400 text-xs w-20 shrink-0">
+                {record.date}
+              </div>
               {record.type === "symptom" ? (
-                <div className="record-content">
-                  <h4>Symptom Log</h4>
-                  <p>Main Symptom: {record.mainSymptom}</p>
+                <div className="flex-1">
+                  <h4 className="font-bold m-0 mb-1 text-sm">Symptom Log</h4>
+                  <p className="m-0 text-sm text-gray-600">
+                    Main Symptom: {record.mainSymptom}
+                  </p>
                 </div>
               ) : (
-                <div className="record-content">
-                  <h4>Consultation</h4>
-                  <p>Doctor: {record.doctor}</p>
-                  <p>Specialty: {record.specialty}</p>
+                <div className="flex-1">
+                  <h4 className="font-bold m-0 mb-1 text-sm">Consultation</h4>
+                  <p className="m-0 text-gray-600 text-sm">
+                    Doctor: {record.doctor}
+                  </p>
+                  <p className="m-0 text-gray-600 text-sm">
+                    Specialty: {record.specialty}
+                  </p>
                 </div>
               )}
             </div>

@@ -1,5 +1,4 @@
 import React from "react";
-import "@/App.css";
 
 const Input = ({
   label,
@@ -14,18 +13,19 @@ const Input = ({
   className = "",
   ...props
 }) => {
-  const baseClasses = "input-field";
-  const errorClass = error ? "input-error" : "";
-  const widthClass = fullWidth ? "input-full-width" : "";
+  const baseClasses =
+    "border border-border rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-shadow disabled:bg-gray-100 disabled:cursor-not-allowed";
+  const errorClass = error ? "border-emergency focus:ring-emergency" : "";
+  const widthClass = fullWidth ? "w-full" : "";
 
   const classNames = [baseClasses, errorClass, widthClass, className]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <div className="input-container">
+    <div className="flex flex-col mb-4">
       {label && (
-        <label htmlFor={id} className="input-label">
+        <label htmlFor={id} className="mb-1 text-sm font-medium text-text">
           {label}
         </label>
       )}
@@ -39,7 +39,11 @@ const Input = ({
         {...props}
       />
       {helperText && (
-        <span className={`input-helper-text ${error ? "error" : ""}`}>
+        <span
+          className={`mt-1 text-xs ${
+            error ? "text-emergency" : "text-gray-500"
+          }`}
+        >
           {helperText}
         </span>
       )}
