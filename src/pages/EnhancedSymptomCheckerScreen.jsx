@@ -143,7 +143,7 @@ const EnhancedSymptomCheckerScreen = () => {
     <div className="flex flex-col h-[calc(100vh-64px)] bg-gray-50">
       <div className="bg-white p-4 shadow-sm z-10 sticky top-0">
         <div className="flex justify-between items-center mb-2">
-          <h1 className="text-xl font-bold text-gray-800">Symptom Checker</h1>
+          <h1 className="text-xl font-bold text-gray-800">HealthPadi AI assistant</h1>
           <div className="flex gap-2">
             <Button
               variant="secondary"
@@ -176,7 +176,7 @@ const EnhancedSymptomCheckerScreen = () => {
                 <Icon name="chat" size="large" />
               </div>
               <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                How are you feeling today?
+                Hello! I'm your HealthPadi AI assistant, How are you feeling today?
               </h3>
               <p className="max-w-xs">
                 Describe your symptoms and I'll provide personalized health
