@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BottomNavigation from "@/components/layout/BottomNavigation";
+import { analyzeSymptoms } from "@/services/aiService"; // Added import for AI service
 
 const SymptomCheckerScreen = () => {
   const [userMessage, setUserMessage] = useState("");
   const [conversation, setConversation] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // Added loading state
   const navigate = useNavigate();
 
   // Predefined quick symptoms
@@ -21,36 +23,47 @@ const SymptomCheckerScreen = () => {
     "Shortness of breath",
   ];
 
-  const handleQuickSymptom = (symptom) => {
+  const handleQuickSymptom = async (symptom) => {
     // Add user message to conversation
     const newUserMessage = { id: Date.now(), sender: "user", text: symptom };
     setConversation((prev) => [...prev, newUserMessage]);
 
-    // Simulate AI response after a short delay
-    setTimeout(() => {
-      const aiResponse = {
+    // Show loading state
+    setIsLoading(true);
+
+    // Use AI service to analyze symptoms
+    const { data, error } = await analyzeSymptoms(symptom);
+
+    setIsLoading(false);
+
+    if (error) {
+      // Handle error case with a simple response
+      const errorMessage = {
         id: Date.now() + 1,
         sender: "ai",
-        summary: `I understand you're experiencing ${symptom.toLowerCase()}.`,
-        urgency:
-          Math.random() > 0.7
-            ? "High"
-            : Math.random() > 0.4
-            ? "Moderate"
-            : "Low",
-        nextSteps:
-          "Rest and monitor your symptoms. If they persist or worsen, consult a healthcare professional.",
-        firstAid: symptom.includes("Headache")
-          ? "Try resting in a quiet, dark room and stay hydrated."
-          : null,
-        disclaimer:
-          "This is not a diagnosis. Always consult a doctor for serious symptoms.",
+        summary: "Sorry, I couldn't analyze your symptoms right now.",
+        urgency: "Moderate",
+        nextSteps: "Please try again or consult with a healthcare professional.",
+        disclaimer: "This is not a diagnosis. Always consult a doctor for serious symptoms.",
       };
-      setConversation((prev) => [...prev, aiResponse]);
-    }, 1000);
+      setConversation((prev) => [...prev, errorMessage]);
+      return;
+    }
+
+    // Add AI response to conversation
+    const aiResponse = {
+      id: Date.now() + 1,
+      sender: "ai",
+      summary: data.summary,
+      urgency: data.urgency,
+      nextSteps: data.nextSteps,
+      firstAid: data.firstAid,
+      disclaimer: data.disclaimer,
+    };
+    setConversation((prev) => [...prev, aiResponse]);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!userMessage.trim()) return;
 
     // Add user message to conversation
@@ -64,33 +77,44 @@ const SymptomCheckerScreen = () => {
     // Clear input
     setUserMessage("");
 
-    // Simulate AI response after a short delay
-    setTimeout(() => {
-      const aiResponse = {
+    // Show loading state
+    setIsLoading(true);
+
+    // Use AI service to analyze symptoms
+    const { data, error } = await analyzeSymptoms(userMessage);
+
+    setIsLoading(false);
+
+    if (error) {
+      // Handle error case with a simple response
+      const errorMessage = {
         id: Date.now() + 1,
         sender: "ai",
-        summary: `I understand you're experiencing: ${userMessage}`,
-        urgency:
-          Math.random() > 0.7
-            ? "High"
-            : Math.random() > 0.4
-            ? "Moderate"
-            : "Low",
-        nextSteps:
-          "Monitor your symptoms closely. If they worsen, seek medical attention.",
-        firstAid: "Stay hydrated and get plenty of rest.",
-        disclaimer:
-          "This is not a diagnosis. Always consult a doctor for serious symptoms.",
+        summary: "Sorry, I couldn't analyze your symptoms right now.",
+        urgency: "Moderate",
+        nextSteps: "Please try again or consult with a healthcare professional.",
+        disclaimer: "This is not a diagnosis. Always consult a doctor for serious symptoms.",
       };
-      setConversation((prev) => [...prev, aiResponse]);
-    }, 1000);
+      setConversation((prev) => [...prev, errorMessage]);
+      return;
+    }
+
+    // Add AI response to conversation
+    const aiResponse = {
+      id: Date.now() + 1,
+      sender: "ai",
+      summary: data.summary,
+      urgency: data.urgency,
+      nextSteps: data.nextSteps,
+      firstAid: data.firstAid,
+      disclaimer: data.disclaimer,
+    };
+    setConversation((prev) => [...prev, aiResponse]);
   };
 
   const handleSeeDoctor = () => {
-    // In a real app, this would navigate to doctor booking
-    alert(
-      "In a complete implementation, this would navigate to doctor booking."
-    );
+    // Navigate to doctor booking
+    navigate("/doctor-listing");
   };
 
   const handleSaveConversation = () => {
@@ -170,6 +194,13 @@ const SymptomCheckerScreen = () => {
             </div>
           ))
         )}
+        
+        {/* Show loading indicator */}
+        {isLoading && (
+          <div className="flex justify-center my-4">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+          </div>
+        )}
       </div>
 
       <div className="mb-5">
@@ -180,6 +211,7 @@ const SymptomCheckerScreen = () => {
               key={index}
               className="bg-gray-200 border-none rounded-full py-2 px-4 text-sm cursor-pointer hover:bg-gray-300 transition-colors"
               onClick={() => handleQuickSymptom(symptom)}
+              disabled={isLoading} // Disable during loading
             >
               {symptom}
             </button>
@@ -194,11 +226,13 @@ const SymptomCheckerScreen = () => {
           onChange={(e) => setUserMessage(e.target.value)}
           placeholder="Describe how you're feeling..."
           className="flex-1"
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+          onKeyPress={(e) => e.key === "Enter" && !isLoading && handleSendMessage()}
+          disabled={isLoading} // Disable during loading
         />
         <button
-          className="bg-primary text-white px-6 rounded-lg hover:opacity-90 transition-opacity"
+          className="bg-primary text-white px-6 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
           onClick={handleSendMessage}
+          disabled={isLoading} // Disable during loading
         >
           Send
         </button>

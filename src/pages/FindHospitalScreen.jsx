@@ -1,4 +1,15 @@
 import React, { useState } from "react";
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+
+// Fix for default marker icons in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const FindHospitalScreen = () => {
   const [viewMode, setViewMode] = useState("map"); // 'map' or 'list'
@@ -9,7 +20,7 @@ const FindHospitalScreen = () => {
     verified: false,
   });
 
-  // Mock hospital data
+  // Mock hospital data with coordinates
   const hospitals = [
     {
       id: 1,
@@ -21,6 +32,7 @@ const FindHospitalScreen = () => {
       type: "government",
       open24Hours: true,
       hasEmergency: true,
+      position: [6.5931, 3.3461] // Latitude, Longitude
     },
     {
       id: 2,
@@ -32,6 +44,7 @@ const FindHospitalScreen = () => {
       type: "government",
       open24Hours: true,
       hasEmergency: true,
+      position: [6.5157, 3.3845]
     },
     {
       id: 3,
@@ -43,6 +56,7 @@ const FindHospitalScreen = () => {
       type: "private",
       open24Hours: false,
       hasEmergency: false,
+      position: [6.4313, 3.4856]
     },
     {
       id: 4,
@@ -54,6 +68,7 @@ const FindHospitalScreen = () => {
       type: "private",
       open24Hours: true,
       hasEmergency: true,
+      position: [6.4633, 3.5836]
     },
   ];
 
@@ -131,15 +146,46 @@ const FindHospitalScreen = () => {
       </div>
 
       {viewMode === "map" ? (
-        <div className="h-[500px] bg-gray-200 rounded-xl flex justify-center items-center mb-5">
-          <div className="text-center p-5">
-            <p className="text-gray-600 mb-2">
-              Map showing your location and nearby hospitals
-            </p>
-            <p className="text-gray-500 text-sm">
-              (Google Maps or Mapbox integration would go here)
-            </p>
-          </div>
+        <div className="h-[500px] rounded-xl mb-5 overflow-hidden shadow-lg">
+          <MapContainer 
+            center={[6.5244, 3.3792]} // Center on Lagos
+            zoom={12} 
+            style={{ height: '100%', width: '100%' }}
+          >
+            <TileLayer
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            
+            {filteredHospitals.map((hospital) => (
+              <Marker key={hospital.id} position={hospital.position}>
+                <Popup>
+                  <div className="p-2">
+                    <h3 className="font-bold text-lg">{hospital.name}</h3>
+                    <p className="text-sm text-gray-600">{hospital.address}</p>
+                    <p className="text-sm mt-1">
+                      <span className={`inline-block w-3 h-3 rounded-full mr-1 ${hospital.verified ? 'bg-green-500' : 'bg-gray-300'}`}></span>
+                      {hospital.verified ? 'Verified' : 'Not Verified'}
+                    </p>
+                    <div className="mt-2">
+                      <button 
+                        className="bg-primary text-white py-1 px-3 text-xs rounded mr-2"
+                        onClick={() => handleCallHospital(hospital.name)}
+                      >
+                        Call
+                      </button>
+                      <button 
+                        className="bg-gray-200 text-gray-800 py-1 px-3 text-xs rounded"
+                        onClick={() => handleNavigate(hospital.name)}
+                      >
+                        Navigate
+                      </button>
+                    </div>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
         </div>
       ) : (
         <div className="list-view">

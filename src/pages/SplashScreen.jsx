@@ -16,7 +16,7 @@ const SplashScreen = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-primary text-white">
       <div className="text-center">
-        <div className="text-5xl font-bold mb-5">HealthPadi</div>
+        {/* <div className="text-5xl font-bold mb-5">HealthPadi</div> */}
         <p className="text-xl">Your Health Companion</p>
       </div>
     </div>

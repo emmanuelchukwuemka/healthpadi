@@ -1,34 +1,33 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// css removed
-
-// Import all the page components (we'll create these later)
 import SplashScreen from "./pages/SplashScreen";
+import OnboardingScreen from "./pages/OnboardingScreen";
 import WelcomeScreen from "./pages/WelcomeScreen";
 import PermissionsScreen from "./pages/PermissionsScreen";
 import AuthChoiceScreen from "./pages/AuthChoiceScreen";
-import PhoneAuthScreen from "./pages/PhoneAuthScreen";
-import OTPVerificationScreen from "./pages/OTPVerificationScreen";
-import EmailAuthScreen from "./pages/EmailAuthScreen";
-import ProfileSetupScreen from "./pages/ProfileSetupScreen";
-import HomeScreen from "./pages/HomeScreen";
-import SymptomCheckerScreen from "./pages/SymptomCheckerScreen";
-import EmergencyFirstAidScreen from "./pages/EmergencyFirstAidScreen";
-import FindHospitalScreen from "./pages/FindHospitalScreen";
-import DoctorListingScreen from "./pages/DoctorListingScreen";
-import ProfileScreen from "./pages/ProfileScreen";
-import SettingsScreen from "./pages/SettingsScreen";
-import AboutScreen from "./pages/AboutScreen";
-
-// Import enhanced components
-import OnboardingScreen from "./pages/OnboardingScreen";
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
+import ProfileSetupScreen from "./pages/ProfileSetupScreen";
+import HomeScreen from "./pages/HomeScreen";
 import EnhancedSymptomCheckerScreen from "./pages/EnhancedSymptomCheckerScreen";
 import EnhancedDoctorListingScreen from "./pages/EnhancedDoctorListingScreen";
 import EnhancedEmergencyScreen from "./pages/EnhancedEmergencyScreen";
 import EnhancedHospitalLocatorScreen from "./pages/EnhancedHospitalLocatorScreen";
 import EnhancedProfileScreen from "./pages/EnhancedProfileScreen";
+import MedicationsScreen from "./pages/MedicationsScreen";
+import DoctorDashboardScreen from "./pages/DoctorDashboardScreen";
+import HospitalDashboardScreen from "./pages/HospitalDashboardScreen";
+
+const PlaceholderScreen = ({ title }) => (
+  <div className="flex items-center justify-center min-h-screen bg-slate-50">
+    <div className="text-center p-8">
+      <div className="text-6xl mb-4">🚧</div>
+      <h1 className="text-2xl font-bold text-slate-800 mb-2">{title}</h1>
+      <p className="text-slate-500 mb-6">This feature is coming soon to HealthPadi.</p>
+      <a href="/home" className="px-6 py-3 bg-teal-500 text-white rounded-xl font-semibold shadow-lg shadow-teal-200">Go Home</a>
+    </div>
+  </div>
+);
 
 function App() {
   return (
@@ -45,42 +44,29 @@ function App() {
           {/* Authentication Flow */}
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
-          <Route path="/phone-auth" element={<PhoneAuthScreen />} />
-          <Route path="/otp-verification" element={<OTPVerificationScreen />} />
-          <Route path="/email-auth" element={<EmailAuthScreen />} />
           <Route path="/profile-setup" element={<ProfileSetupScreen />} />
 
-          {/* Main App Screens */}
+          {/* Main App Screens (Patient) */}
           <Route path="/home" element={<HomeScreen />} />
-          <Route path="/symptom-checker" element={<SymptomCheckerScreen />} />
-          <Route
-            path="/symptom-checker-enhanced"
-            element={<EnhancedSymptomCheckerScreen />}
-          />
-          <Route
-            path="/emergency-first-aid"
-            element={<EmergencyFirstAidScreen />}
-          />
-          <Route
-            path="/emergency-enhanced"
-            element={<EnhancedEmergencyScreen />}
-          />
-          <Route path="/find-hospital" element={<FindHospitalScreen />} />
-          <Route
-            path="/hospital-locator-enhanced"
-            element={<EnhancedHospitalLocatorScreen />}
-          />
-          <Route path="/doctor-listing" element={<DoctorListingScreen />} />
-          <Route
-            path="/doctor-listing-enhanced"
-            element={<EnhancedDoctorListingScreen />}
-          />
-          <Route path="/profile" element={<ProfileScreen />} />
-          <Route path="/profile-enhanced" element={<EnhancedProfileScreen />} />
 
-          {/* Additional Screens */}
-          <Route path="/settings" element={<SettingsScreen />} />
-          <Route path="/about" element={<AboutScreen />} />
+          {/* Role-Based Dashboards (New) */}
+          <Route path="/doctor-dashboard" element={<DoctorDashboardScreen />} />
+          <Route path="/hospital-dashboard" element={<HospitalDashboardScreen />} />
+
+          {/* Feature Screens - Using Enhanced Versions */}
+          <Route path="/symptom-checker" element={<EnhancedSymptomCheckerScreen />} />
+          <Route path="/emergency-first-aid" element={<EnhancedEmergencyScreen />} />
+          <Route path="/find-hospital" element={<EnhancedHospitalLocatorScreen />} />
+          <Route path="/doctor-listing" element={<EnhancedDoctorListingScreen />} />
+          <Route path="/profile" element={<EnhancedProfileScreen />} />
+
+          {/* New Premium Features */}
+          <Route path="/medications" element={<MedicationsScreen />} />
+
+          {/* Placeholders for New Features */}
+          <Route path="/labs" element={<PlaceholderScreen title="Lab Results" />} />
+          <Route path="/goals" element={<PlaceholderScreen title="Health Goals" />} />
+
         </Routes>
       </div>
     </Router>
