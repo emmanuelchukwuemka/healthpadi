@@ -7,6 +7,10 @@ import PermissionsScreen from "./pages/PermissionsScreen";
 import AuthChoiceScreen from "./pages/AuthChoiceScreen";
 import LoginScreen from "./pages/LoginScreen";
 import RegisterScreen from "./pages/RegisterScreen";
+import RegistrationTypeScreen from "./pages/RegistrationTypeScreen";
+import PatientRegistrationScreen from "./pages/PatientRegistrationScreen";
+import DoctorRegistrationScreen from "./pages/DoctorRegistrationScreen";
+import HospitalRegistrationScreen from "./pages/HospitalRegistrationScreen";
 import ProfileSetupScreen from "./pages/ProfileSetupScreen";
 import HomeScreen from "./pages/HomeScreen";
 import EnhancedSymptomCheckerScreen from "./pages/EnhancedSymptomCheckerScreen";
@@ -16,6 +20,8 @@ import EnhancedHospitalLocatorScreen from "./pages/EnhancedHospitalLocatorScreen
 import EnhancedProfileScreen from "./pages/EnhancedProfileScreen";
 import MedicationsScreen from "./pages/MedicationsScreen";
 import DoctorDashboardScreen from "./pages/DoctorDashboardScreen";
+import DoctorScheduleScreen from "./pages/DoctorScheduleScreen";
+import DoctorChatScreen from "./pages/DoctorChatScreen";
 import HospitalDashboardScreen from "./pages/HospitalDashboardScreen";
 import AIHelpWidget from "./components/common/AIHelpWidget";
 
@@ -42,11 +48,15 @@ function App() {
           <Route path="/onboarding" element={<OnboardingScreen />} />
           <Route path="/welcome" element={<WelcomeScreen />} />
           <Route path="/permissions" element={<PermissionsScreen />} />
-          <Route path="/auth-choice" element={<AuthChoiceScreen />} />
+          <Route path="/auth-choice" element={<RegistrationTypeScreen />} />
 
           {/* Authentication Flow */}
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/register" element={<RegisterScreen />} />
+          <Route path="/register-type" element={<RegistrationTypeScreen />} />
+          <Route path="/register/patient" element={<PatientRegistrationScreen />} />
+          <Route path="/register/doctor" element={<DoctorRegistrationScreen />} />
+          <Route path="/register/hospital" element={<HospitalRegistrationScreen />} />
           <Route path="/profile-setup" element={<ProfileSetupScreen />} />
 
           {/* Main App Screens (Patient) */}
@@ -54,6 +64,8 @@ function App() {
 
           {/* Role-Based Dashboards (New) */}
           <Route path="/doctor-dashboard" element={<DoctorDashboardScreen />} />
+          <Route path="/doctor-schedule" element={<DoctorScheduleScreen />} />
+          <Route path="/doctor-chat" element={<DoctorChatScreen />} />
           <Route path="/hospital-dashboard" element={<HospitalDashboardScreen />} />
 
           {/* Feature Screens - Using Enhanced Versions */}

@@ -1,22 +1,39 @@
 import { supabase } from './supabaseClient'
 
-// Sign up with email and password
-export const signUp = async (email, password, firstName, lastName) => {
+/**
+ * Sign up with email, password, and role-specific data
+ * @param {string} email - User email
+ * @param {string} password - User password
+ * @param {object} userData - User-specific data
+ * @param {string} role - 'patient' | 'doctor' | 'hospital'
+ */
+export const signUp = async (email, password, userData, role = 'patient') => {
   try {
+    // Create auth user with role in metadata
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          role: role,
+          first_name: userData.firstName || userData.facilityName,
+          last_name: userData.lastName || ''
+        }
+      }
     })
 
     if (error) throw error
 
-    // If sign up is successful, update the user's profile
+    // Store role-specific data in profiles table with role field
     if (data.user) {
-      await updateProfile(data.user.id, { 
-        first_name: firstName, 
-        last_name: lastName,
-        full_name: `${firstName} ${lastName}`
-      })
+      const profileData = {
+        id: data.user.id,
+        role: role,
+        email: email,
+        ...userData
+      }
+
+      await updateProfile(data.user.id, profileData)
     }
 
     return { data, error: null }
@@ -65,13 +82,18 @@ export const getCurrentUser = async () => {
   }
 }
 
+// Get user role from user metadata
+export const getUserRole = (user) => {
+  return user?.user_metadata?.role || 'patient'
+}
+
 // Update user profile
 export const updateProfile = async (userId, profileData) => {
   try {
     const { data, error } = await supabase
       .from('profiles')
       .upsert({ id: userId, ...profileData }, { onConflict: 'id' })
-      
+
     if (error) throw error
     return { data, error: null }
   } catch (error) {
@@ -95,4 +117,11 @@ export const getUserProfile = async (userId) => {
     console.error('Error getting user profile:', error)
     return { data: null, error }
   }
+}
+
+// Auth state change listener
+export const onAuthStateChange = (callback) => {
+  return supabase.auth.onAuthStateChange((event, session) => {
+    callback(event, session)
+  })
 }

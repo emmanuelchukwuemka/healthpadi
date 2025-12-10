@@ -83,7 +83,7 @@ const AuthChoiceScreen = () => {
       else if (selectedRole === 'hospital') navigate("/hospital-dashboard");
       else navigate("/profile-setup");
     } else {
-      navigate("/register", { state: { role: selectedRole } });
+      navigate("/register-type");
     }
   };
 

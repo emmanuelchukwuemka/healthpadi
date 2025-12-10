@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// import { signIn } from "@/services/authService"; // Kept imported but commented for safety as per debugging context
+import { signIn, getUserRole } from "../services/authService";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -30,14 +30,39 @@ const LoginScreen = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrors({});
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const { data, error } = await signIn(formData.email, formData.password);
+
+      if (error) {
+        setErrors({ general: error.message || 'Login failed. Please check your credentials.' });
+        setIsLoading(false);
+        return;
+      }
+
+      if (data?.user) {
+        // Get user role and redirect to appropriate dashboard
+        const role = getUserRole(data.user);
+
+        switch (role) {
+          case 'doctor':
+            navigate("/doctor-dashboard");
+            break;
+          case 'hospital':
+            navigate("/hospital-dashboard");
+            break;
+          case 'patient':
+          default:
+            navigate("/home");
+            break;
+        }
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setErrors({ general: 'An unexpected error occurred. Please try again.' });
       setIsLoading(false);
-      // For now, just navigate to home (or back to auth choice if home not enabled)
-      console.log("Login successful", formData);
-      // navigate("/home"); 
-    }, 1500);
+    }
   };
 
   return (
@@ -130,6 +155,13 @@ const LoginScreen = () => {
             </div>
           </div>
 
+          {/* Error Message */}
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
+              {errors.general}
+            </div>
+          )}
+
           {/* Remember & Forgot */}
           <div className={`flex items-center justify-between transition-all duration-700 delay-300 transform ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
             <label className="flex items-center gap-2 cursor-pointer group">
@@ -184,7 +216,7 @@ const LoginScreen = () => {
           <p className="text-slate-500 font-['Inter'] text-sm">
             Don't have an account?{' '}
             <button
-              onClick={() => navigate("/register")}
+              onClick={() => navigate("/register-type")}
               className="font-semibold relative group cursor-pointer border-none bg-transparent" style={{ color: '#00A0B0' }}
               onMouseEnter={(e) => e.currentTarget.style.color = '#003087'}
               onMouseLeave={(e) => e.currentTarget.style.color = '#00A0B0'}
