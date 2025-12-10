@@ -7,7 +7,7 @@ const BottomNavigation = () => {
 
   const navItems = [
     { id: "home", label: "Home", path: "/home" },
-    { id: "symptom", label: "Symptom", path: "/symptom-checker" },
+    { id: "symptom", label: "Mypadi", path: "/symptom-checker" },
     { id: "hospital", label: "Hospital", path: "/find-hospital" },
     { id: "doctors", label: "Doctors", path: "/doctor-listing" },
     { id: "profile", label: "Profile", path: "/profile" },
