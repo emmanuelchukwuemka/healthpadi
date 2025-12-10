@@ -14,9 +14,9 @@ const SplashScreen = () => {
   }, [navigate]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-primary text-white">
+    <div className="flex justify-center items-center h-screen text-white" style={{ backgroundColor: '#003087' }}>
       <div className="text-center">
-        {/* <div className="text-5xl font-bold mb-5">HealthPadi</div> */}
+        <img src="/logo.png" alt="HealthPadi" className="h-[200px] w-auto mx-auto mb-4 animate-pulse" />
         <p className="text-xl">Your Health Companion</p>
       </div>
     </div>

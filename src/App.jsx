@@ -17,6 +17,7 @@ import EnhancedProfileScreen from "./pages/EnhancedProfileScreen";
 import MedicationsScreen from "./pages/MedicationsScreen";
 import DoctorDashboardScreen from "./pages/DoctorDashboardScreen";
 import HospitalDashboardScreen from "./pages/HospitalDashboardScreen";
+import AIHelpWidget from "./components/common/AIHelpWidget";
 
 const PlaceholderScreen = ({ title }) => (
   <div className="flex items-center justify-center min-h-screen bg-slate-50">
@@ -33,6 +34,8 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen bg-background text-text">
+        {/* Global AI Help Assistant */}
+        <AIHelpWidget />
         <Routes>
           {/* App Entry & Onboarding */}
           <Route path="/" element={<SplashScreen />} />
